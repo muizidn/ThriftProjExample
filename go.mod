@@ -1,4 +1,4 @@
-module github.com/muizidn/goproj
+module github.com/muizidn/ThriftProjExample
 
 go 1.13
 

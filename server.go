@@ -23,7 +23,7 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/apache/thrift/lib/go/thrift"
-	"github.com/muizidn/goproj/gen-go/tutorial"
+	"github.com/muizidn/ThriftProjExample/gen-go/tutorial"
 )
 
 func runServer(transportFactory thrift.TTransportFactory, protocolFactory thrift.TProtocolFactory, addr string, secure bool) error {

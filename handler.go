@@ -22,9 +22,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/muizidn/goproj/gen-go/shared"
+	"github.com/muizidn/ThriftProjExample/gen-go/shared"
 	"strconv"
-	"github.com/muizidn/goproj/gen-go/tutorial"
+	"github.com/muizidn/ThriftProjExample/gen-go/tutorial"
 )
 
 type CalculatorHandler struct {

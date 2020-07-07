@@ -23,7 +23,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
-	"github.com/muizidn/goproj/gen-go/tutorial"
+	"github.com/muizidn/ThriftProjExample/gen-go/tutorial"
 
 	"github.com/apache/thrift/lib/go/thrift"
 )
