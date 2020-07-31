@@ -39,10 +39,13 @@ func main() {
 	protocol := flag.String("P", "binary", "Specify the protocol (binary, compact, json, simplejson)")
 	framed := flag.Bool("framed", false, "Use framed transport")
 	buffered := flag.Bool("buffered", false, "Use buffered transport")
-	addr := flag.String("addr", "localhost:9900", "Address to listen to")
+	port := flag.Int("port", 9090, "Address port")
+	host := flag.String("host", "localhost", "Address host")
 	secure := flag.Bool("secure", false, "Use tls secure transport")
 
 	flag.Parse()
+
+	addr := fmt.Sprintf("%s:%d", *host, *port)
 
 	var protocolFactory thrift.TProtocolFactory
 	switch *protocol {
@@ -72,11 +75,11 @@ func main() {
 	}
 
 	if *server {
-		if err := runServer(transportFactory, protocolFactory, *addr, *secure); err != nil {
+		if err := runServer(transportFactory, protocolFactory, addr, *secure); err != nil {
 			fmt.Println("error running server:", err)
 		}
 	} else {
-		if err := runClient(transportFactory, protocolFactory, *addr, *secure); err != nil {
+		if err := runClient(transportFactory, protocolFactory, addr, *secure); err != nil {
 			fmt.Println("error running client:", err)
 		}
 	}

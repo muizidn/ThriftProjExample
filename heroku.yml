@@ -1,0 +1,4 @@
+build:
+  web: make build
+run:
+  web: ./ThriftProjExample -server -port=$PORT
