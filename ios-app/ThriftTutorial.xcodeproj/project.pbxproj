@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		A7CBDC1C24B448960039673B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBDC1B24B448960039673B /* AppDelegate.swift */; };
-		A7CBDC1E24B448960039673B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBDC1D24B448960039673B /* SceneDelegate.swift */; };
 		A7CBDC2024B448960039673B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBDC1F24B448960039673B /* ViewController.swift */; };
 		A7CBDC2324B448960039673B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7CBDC2124B448960039673B /* Main.storyboard */; };
 		A7CBDC2524B448970039673B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7CBDC2424B448970039673B /* Assets.xcassets */; };
@@ -24,7 +23,6 @@
 		093FD493110CF5CA545BA81B /* Pods_ThriftTutorial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ThriftTutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CBDC1824B448960039673B /* ThriftTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThriftTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CBDC1B24B448960039673B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		A7CBDC1D24B448960039673B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		A7CBDC1F24B448960039673B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A7CBDC2224B448960039673B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A7CBDC2424B448970039673B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,7 +88,6 @@
 			children = (
 				A7CBDC3824B44F280039673B /* gen-swift */,
 				A7CBDC1B24B448960039673B /* AppDelegate.swift */,
-				A7CBDC1D24B448960039673B /* SceneDelegate.swift */,
 				A7CBDC1F24B448960039673B /* ViewController.swift */,
 				A7CBDC2124B448960039673B /* Main.storyboard */,
 				A7CBDC2424B448970039673B /* Assets.xcassets */,
@@ -230,7 +227,6 @@
 				A7CBDC3D24B44F280039673B /* tutorial+Exts.swift in Sources */,
 				A7CBDC4024B44F280039673B /* shared+Exts.swift in Sources */,
 				A7CBDC1C24B448960039673B /* AppDelegate.swift in Sources */,
-				A7CBDC1E24B448960039673B /* SceneDelegate.swift in Sources */,
 				A7CBDC3F24B44F280039673B /* shared.swift in Sources */,
 				A7CBDC3E24B44F280039673B /* tutorial.swift in Sources */,
 			);
@@ -380,6 +376,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SDSLU2QT5X;
 				INFOPLIST_FILE = ThriftTutorial/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -399,6 +396,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SDSLU2QT5X;
 				INFOPLIST_FILE = ThriftTutorial/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

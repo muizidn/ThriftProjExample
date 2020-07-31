@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         do {
             textView.textColor = .black
             
-            let ttransport = try TSocketTransport(hostname: "localhost", port: 9090)
+            let ttransport = try TSocketTransport(hostname: "localhost", port: 9900)
             let tprotocol = TBinaryProtocol(on: ttransport)
             
             let client = CalculatorClient(inoutProtocol: tprotocol)
