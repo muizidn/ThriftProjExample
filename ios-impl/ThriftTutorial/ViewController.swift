@@ -19,17 +19,9 @@ final class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        btnSend.addTarget(self, action: #selector(connect), for: .touchUpInside)
-        
-        do {
-            let a = TSocketTransport2(hostname: "", port: 2)
-            print("a", a)
-        }
-        print("===")
-        do {
-//            let a = try! TTCPClient(hostname: "0.0.0.0", port: 8989)
-//            print("a2", a)
-        }
+        btnSend.addTarget(self,
+                          action: #selector(connect),
+                          for: .touchUpInside)
     }
     
     @objc func connect() {
@@ -71,20 +63,25 @@ final class ViewController: UIViewController {
             
             var ttransport: TTransport
             
-//            // issue only send ping then socket closed
-//            ttransport = TTCPSocketTransport(
-//                address: host.text ?? "",
-//                port: port.text.flatMap { Int32($0) } ?? 0)
-//
-//            // issue during connect
-//            ttransport = try TSocketTransport(
-//                hostname: host.text ?? "",
-//                port: port.text.flatMap { Int($0) } ?? 0)
+            //            // issue only send ping then socket closed
+            //            ttransport = TTCPSocketTransport(
+            //                address: host.text ?? "",
+            //                port: port.text.flatMap { Int32($0) } ?? 0)
+            //
+            //            // issue during connect
+            //            ttransport = try TSocketTransport(
+            //                hostname: host.text ?? "",
+            //                port: port.text.flatMap { Int($0) } ?? 0)
             
             // works
             ttransport = TSocketTransport2(
                 hostname: host.text ?? "",
                 port: port.text.flatMap { Int32($0) } ?? 0)
+            
+//            // works
+//            ttransport = TSocketRaywenderlich(
+//                hostname: host.text ?? "",
+//                port: port.text.flatMap { UInt32($0) } ?? 0)
             
             var tprotocol: TProtocol
             
@@ -153,15 +150,15 @@ final class TTCPSocketTransport: TTransport {
     }
     
     private struct Sys {
-      #if os(Linux)
-      static let read = Glibc.read
-      static let write = Glibc.write
-      static let close = Glibc.close
-      #else
-      static let read = Darwin.read
-      static let write = Darwin.write
-      static let close = Darwin.close
-      #endif
+        #if os(Linux)
+        static let read = Glibc.read
+        static let write = Glibc.write
+        static let close = Glibc.close
+        #else
+        static let read = Darwin.read
+        static let write = Darwin.write
+        static let close = Darwin.close
+        #endif
     }
     
     func read(size: Int) throws -> Data {
@@ -173,7 +170,7 @@ final class TTCPSocketTransport: TTransport {
                     NSLocalizedFailureReasonErrorKey:"buff nil \(size)"
             ])
         }
-
+        
         let data = Data(buff)
         print("READDATA", String(data: data, encoding: .ascii)!)
         return data
@@ -201,42 +198,115 @@ final class TSocketTransport2: TTransport {
     }
     
     deinit {
-        closeSocket(_socketDescriptor)
+        close()
     }
     
     public func readAll(size: Int) throws -> Data {
-      var out = Data()
-      while out.count < size {
-        out.append(try self.read(size: size))
-      }
-      return out
-    }
-    
-    public func read(size: Int) throws -> Data {
-      var buff = Array<UInt8>.init(repeating: 0, count: size)
-      let readBytes = Darwin.read(_socketDescriptor, &buff, size)
-      
-      return Data(buff[0..<readBytes])
-    }
-    
-    public func write(data: Data) {
-      var bytesToWrite = data.count
-      var writeBuffer = data
-      while bytesToWrite > 0 {
-        let written = writeBuffer.withUnsafeBytes {
-          Darwin.write(_socketDescriptor, $0, writeBuffer.count)
+        var out = Data()
+        while out.count < size {
+            out.append(try self.read(size: size))
         }
-        writeBuffer = writeBuffer.subdata(in: written ..< writeBuffer.count)
-        bytesToWrite -= written
-      }
+        return out
     }
     
-    public func flush() throws {
-      // nothing to do
+    func read(size: Int) throws -> Data {
+        var buff = Array<UInt8>.init(repeating: 0, count: size)
+        let readBytes = Darwin.read(_socketDescriptor, &buff, size)
+        
+        return Data(buff[0..<readBytes])
     }
     
-    public func close() {
-      shutdown(_socketDescriptor, Int32(SHUT_RDWR))
-      _ = Darwin.close(_socketDescriptor)
+    func write(data: Data) {
+        var bytesToWrite = data.count
+        var writeBuffer = data
+        while bytesToWrite > 0 {
+            let written = writeBuffer.withUnsafeBytes {
+                Darwin.write(_socketDescriptor, $0, writeBuffer.count)
+            }
+            writeBuffer = writeBuffer.subdata(in: written ..< writeBuffer.count)
+            bytesToWrite -= written
+        }
+    }
+    
+    func flush() throws {
+        // nothing to do
+    }
+    
+    func close() {
+        closeSocket(_socketDescriptor)
+    }
+}
+
+final class TTCPStream: NSObject, TTransport, StreamDelegate {
+    private let inputStream: InputStream!
+    private let outputStream: OutputStream!
+    
+    init(hostname: String, port: UInt32) {
+        var readStream: Unmanaged<CFReadStream>?
+        var writeStream: Unmanaged<CFWriteStream>?
+        
+        CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
+                                           hostname as CFString,
+                                           port,
+                                           &readStream,
+                                           &writeStream)
+        
+        inputStream = readStream?.takeRetainedValue()
+        outputStream = writeStream?.takeRetainedValue()
+        
+        inputStream.schedule(in: .current, forMode: .common)
+        outputStream.schedule(in: .current, forMode: .common)
+        
+        inputStream.open()
+        outputStream.open()
+        
+        super.init()
+    }
+    
+    deinit {
+        close()
+    }
+    
+    func close() {
+        inputStream.close()
+        outputStream.close()
+    }
+    
+    private var inputstreambytesavailable = false
+    
+    func read(size: Int) throws -> Data {
+        let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+        let numberOfBytesRead = inputStream.read(buffer, maxLength: size)
+        if numberOfBytesRead < 0 {
+            throw NSError(
+                domain: "\(Self.self)",
+                code: -1,
+                userInfo: [
+                    NSLocalizedFailureReasonErrorKey:
+                    "Number of bytes \(numberOfBytesRead)"
+            ])
+        }
+        return Data(bytes: UnsafeRawPointer(buffer),
+                    count: numberOfBytesRead)
+        
+    }
+    
+    func write(data: Data) throws {
+        _ = try data.withUnsafeBytes {
+            guard let pointer = $0.baseAddress?.assumingMemoryBound(to: UInt8.self) else {
+                throw NSError(
+                    domain: "\(self)",
+                    code: 1,
+                    userInfo: [
+                        NSLocalizedFailureReasonErrorKey:
+                        "Error writing data"
+                ])
+            }
+            outputStream.write(pointer, maxLength: data.count)
+        }
+    }
+    
+    func flush() throws {
+        
     }
 }
