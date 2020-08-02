@@ -1,0 +1,29 @@
+PODS:
+  - SwiftSocket (2.0.2)
+  - Thrift (0.13.0)
+
+DEPENDENCIES:
+  - SwiftSocket
+  - Thrift (from `https://github.com/apache/thrift.git`, tag `v0.13.0`)
+
+SPEC REPOS:
+  trunk:
+    - SwiftSocket
+
+EXTERNAL SOURCES:
+  Thrift:
+    :git: https://github.com/apache/thrift.git
+    :tag: v0.13.0
+
+CHECKOUT OPTIONS:
+  Thrift:
+    :git: https://github.com/apache/thrift.git
+    :tag: v0.13.0
+
+SPEC CHECKSUMS:
+  SwiftSocket: 6f4c9c63fbc5c1d61188936bb3c599fd546f40ae
+  Thrift: bade70323444affe9ad3b109cb57440d6e9980cd
+
+PODFILE CHECKSUM: a46142f020161ee81c4104732fc17f6a3b65802a
+
+COCOAPODS: 1.9.3
