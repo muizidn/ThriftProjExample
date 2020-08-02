@@ -20,6 +20,16 @@ final class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         btnSend.addTarget(self, action: #selector(connect), for: .touchUpInside)
+        
+        do {
+            let a = TSocketTransport2(hostname: "", port: 2)
+            print("a", a)
+        }
+        print("===")
+        do {
+//            let a = try! TTCPClient(hostname: "0.0.0.0", port: 8989)
+//            print("a2", a)
+        }
     }
     
     @objc func connect() {
@@ -40,7 +50,18 @@ final class ViewController: UIViewController {
             print("Connected!")
         case .failure(let error):
             print("Not connected!", error)
+            return
         }
+        
+        switch client.send(string: "say something") {
+        case .success:
+            print("Sent!")
+        case .failure(let error):
+            print("Not sent!", error)
+            return
+        }
+        
+        client.close()
     }
     
     private func connectThrift() {
@@ -50,15 +71,20 @@ final class ViewController: UIViewController {
             
             var ttransport: TTransport
             
-            ttransport = TTCPSocketTransport(
-                address: host.text ?? "",
-                port: port.text.flatMap { Int32($0) } ?? 0)
+//            // issue only send ping then socket closed
+//            ttransport = TTCPSocketTransport(
+//                address: host.text ?? "",
+//                port: port.text.flatMap { Int32($0) } ?? 0)
+//
+//            // issue during connect
+//            ttransport = try TSocketTransport(
+//                hostname: host.text ?? "",
+//                port: port.text.flatMap { Int($0) } ?? 0)
             
-            ttransport = try TSocketTransport(
+            // works
+            ttransport = TSocketTransport2(
                 hostname: host.text ?? "",
-                port: port.text.flatMap { Int($0) } ?? 0)
-            
-            // ttransport = TFramedTransport(transport: ttransport)
+                port: port.text.flatMap { Int32($0) } ?? 0)
             
             var tprotocol: TProtocol
             
@@ -166,4 +192,51 @@ final class TTCPSocketTransport: TTransport {
         
     }
     
+}
+
+final class TSocketTransport2: TTransport {
+    private let _socketDescriptor: Int32
+    init(hostname: String, port: Int32) {
+        _socketDescriptor = openSocket(UnsafePointer<Int8>(hostname), port)
+    }
+    
+    deinit {
+        closeSocket(_socketDescriptor)
+    }
+    
+    public func readAll(size: Int) throws -> Data {
+      var out = Data()
+      while out.count < size {
+        out.append(try self.read(size: size))
+      }
+      return out
+    }
+    
+    public func read(size: Int) throws -> Data {
+      var buff = Array<UInt8>.init(repeating: 0, count: size)
+      let readBytes = Darwin.read(_socketDescriptor, &buff, size)
+      
+      return Data(buff[0..<readBytes])
+    }
+    
+    public func write(data: Data) {
+      var bytesToWrite = data.count
+      var writeBuffer = data
+      while bytesToWrite > 0 {
+        let written = writeBuffer.withUnsafeBytes {
+          Darwin.write(_socketDescriptor, $0, writeBuffer.count)
+        }
+        writeBuffer = writeBuffer.subdata(in: written ..< writeBuffer.count)
+        bytesToWrite -= written
+      }
+    }
+    
+    public func flush() throws {
+      // nothing to do
+    }
+    
+    public func close() {
+      shutdown(_socketDescriptor, Int32(SHUT_RDWR))
+      _ = Darwin.close(_socketDescriptor)
+    }
 }

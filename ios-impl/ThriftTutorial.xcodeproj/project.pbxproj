@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A782694824D6BF7E00782571 /* TTCPClient.c in Sources */ = {isa = PBXBuildFile; fileRef = A782694624D6BF7E00782571 /* TTCPClient.c */; };
 		A7CBDC1C24B448960039673B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBDC1B24B448960039673B /* AppDelegate.swift */; };
 		A7CBDC2024B448960039673B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7CBDC1F24B448960039673B /* ViewController.swift */; };
 		A7CBDC2324B448960039673B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7CBDC2124B448960039673B /* Main.storyboard */; };
@@ -21,6 +22,9 @@
 
 /* Begin PBXFileReference section */
 		093FD493110CF5CA545BA81B /* Pods_ThriftTutorial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ThriftTutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A782694524D6BF7D00782571 /* ThriftTutorial-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ThriftTutorial-Bridging-Header.h"; sourceTree = "<group>"; };
+		A782694624D6BF7E00782571 /* TTCPClient.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = TTCPClient.c; sourceTree = "<group>"; };
+		A782694724D6BF7E00782571 /* TTCPClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTCPClient.h; sourceTree = "<group>"; };
 		A7CBDC1824B448960039673B /* ThriftTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ThriftTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7CBDC1B24B448960039673B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7CBDC1F24B448960039673B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -89,10 +93,13 @@
 				A7CBDC3824B44F280039673B /* gen-swift */,
 				A7CBDC1B24B448960039673B /* AppDelegate.swift */,
 				A7CBDC1F24B448960039673B /* ViewController.swift */,
+				A782694624D6BF7E00782571 /* TTCPClient.c */,
+				A782694724D6BF7E00782571 /* TTCPClient.h */,
 				A7CBDC2124B448960039673B /* Main.storyboard */,
 				A7CBDC2424B448970039673B /* Assets.xcassets */,
 				A7CBDC2624B448970039673B /* LaunchScreen.storyboard */,
 				A7CBDC2924B448970039673B /* Info.plist */,
+				A782694524D6BF7D00782571 /* ThriftTutorial-Bridging-Header.h */,
 			);
 			path = ThriftTutorial;
 			sourceTree = "<group>";
@@ -142,6 +149,7 @@
 				TargetAttributes = {
 					A7CBDC1724B448960039673B = {
 						CreatedOnToolsVersion = 11.2.1;
+						LastSwiftMigration = 1120;
 					};
 				};
 			};
@@ -226,6 +234,7 @@
 				A7CBDC2024B448960039673B /* ViewController.swift in Sources */,
 				A7CBDC3D24B44F280039673B /* tutorial+Exts.swift in Sources */,
 				A7CBDC4024B44F280039673B /* shared+Exts.swift in Sources */,
+				A782694824D6BF7E00782571 /* TTCPClient.c in Sources */,
 				A7CBDC1C24B448960039673B /* AppDelegate.swift in Sources */,
 				A7CBDC3F24B44F280039673B /* shared.swift in Sources */,
 				A7CBDC3E24B44F280039673B /* tutorial.swift in Sources */,
@@ -373,6 +382,7 @@
 			baseConfigurationReference = F9CBFA0A87856CAC78B6ABDE /* Pods-ThriftTutorial.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SDSLU2QT5X;
 				INFOPLIST_FILE = ThriftTutorial/Info.plist;
@@ -383,6 +393,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.muiz.idn.ThriftTutorial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ThriftTutorial/ThriftTutorial-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -393,6 +405,7 @@
 			baseConfigurationReference = DF3E483A29E54A9849E4A765 /* Pods-ThriftTutorial.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SDSLU2QT5X;
 				INFOPLIST_FILE = ThriftTutorial/Info.plist;
@@ -403,6 +416,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.muiz.idn.ThriftTutorial;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "ThriftTutorial/ThriftTutorial-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
